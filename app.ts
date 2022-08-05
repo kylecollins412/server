@@ -1,28 +1,28 @@
-import path from "path";
-import express, { Request, Response } from "express";
-import mongoose from "mongoose";
-import cookieParser from "cookie-parser";
-import { config } from "dotenv";
 import { spawn } from "child_process";
-import cron from "node-cron";
 import compression from "compression";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import { config } from "dotenv";
+import express, { Request, Response } from "express";
 import { unlink } from "fs";
 import helmet from "helmet";
-import cors from "cors";
+import mongoose from "mongoose";
+import cron from "node-cron";
+import path from "path";
 import deserializeUser from "./middlewares/deserializeUser.middleware";
 
 config();
 
-import apiAuth from "./middlewares/apiAuth.middleware";
-import GuestRouter from "./routes/guest.routes";
-import contactRouter from "./routes/contact.routes";
-import propertyRouter from "./routes/property.routes";
-import otpRouter from "./routes/otp.routes";
-import listingRouter from "./routes/listing.routes";
-import authRouter from "./routes/auth.routes";
-import userRouter from "./routes/user.routes";
 import logger from "./helpers/logger.helper";
 import { uploadFileToS3 } from "./helpers/s3.helper";
+import apiAuth from "./middlewares/apiAuth.middleware";
+import authRouter from "./routes/auth.routes";
+import contactRouter from "./routes/contact.routes";
+import GuestRouter from "./routes/guest.routes";
+import listingRouter from "./routes/listing.routes";
+import otpRouter from "./routes/otp.routes";
+import propertyRouter from "./routes/property.routes";
+import userRouter from "./routes/user.routes";
 
 const app = express();
 

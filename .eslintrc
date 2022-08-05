@@ -22,7 +22,8 @@
 		"plugin:jsonc/base",
 		"plugin:pii/recommended",
 		"plugin:no-unsanitized/DOM",
-		"plugin:prettier/recommended"
+		"plugin:prettier/recommended",
+		"plugin:@typescript-eslint/recommended"
 	],
 	"parserOptions": {
 		"ecmaVersion": 2020,
