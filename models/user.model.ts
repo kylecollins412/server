@@ -1,10 +1,10 @@
-import { prop, getModelForClass, Ref, pre } from '@typegoose/typegoose';
-import { compare, genSalt, hash } from 'bcrypt';
-import { Listing } from './listing.model';
-import { Property } from './property.model';
+import { prop, getModelForClass, Ref, pre } from "@typegoose/typegoose";
+import { compare, genSalt, hash } from "bcrypt";
+import { Listing } from "./listing.model";
+import { Property } from "./property.model";
 
-@pre<User>('save', async function (next) {
-	if (this.isModified('password') || this.isNew) {
+@pre<User>("save", async function (next) {
+	if (this.isModified("password") || this.isNew) {
 		const salt = await genSalt(10);
 		const hashedPassword = await hash(this.password, salt);
 

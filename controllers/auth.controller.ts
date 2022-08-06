@@ -1,27 +1,24 @@
-import { Request, Response } from 'express';
-import { UserModel } from '../models/user.model';
-import { generateJWT, verifyJWT } from '../helpers/jwt.helper';
-import { httpOnlyCookie } from '../helpers/cookie.helper';
-import logger from '../helpers/logger.helper';
-import { LoginBody, SignupBody } from '../schemas/auth.schema';
-import { StatusCodes } from 'http-status-codes';
+import { Request, Response } from "express";
+import { UserModel } from "../models/user.model";
+import { generateJWT, verifyJWT } from "../helpers/jwt.helper";
+import { httpOnlyCookie } from "../helpers/cookie.helper";
+import logger from "../helpers/logger.helper";
+import { LoginBody, SignupBody } from "../schemas/auth.schema";
+import { StatusCodes } from "http-status-codes";
 
 /* --------------------------------- ANCHOR Signup --------------------------------- */
-export const signupHandler = async (
-	req: Request<{}, {}, SignupBody>,
-	res: Response
-) => {
+export const signupHandler = async (req: Request<{}, {}, SignupBody>, res: Response) => {
 	try {
 		const { name, email, phone, password } = req.body;
 
-		const existingUser = await UserModel.find({
+		const existingUser = await UserModel.findOne({
 			$or: [{ email }, { phone }],
 		});
 
 		if (existingUser) {
 			return res.status(StatusCodes.CONFLICT).json({
 				success: false,
-				message: 'User with same email or phone already exists',
+				message: "User with same email or phone already exists",
 				data: {},
 			});
 		}
@@ -40,11 +37,11 @@ export const signupHandler = async (
 			id: newUser._id,
 		});
 
-		httpOnlyCookie('token', token, res);
+		httpOnlyCookie("token", token, res);
 
 		return res.status(StatusCodes.CREATED).json({
 			success: true,
-			message: 'User created successfully',
+			message: "User created successfully",
 			data: newUser,
 		});
 	} catch (err: any) {
@@ -53,24 +50,21 @@ export const signupHandler = async (
 		if (err.code === 11000) {
 			return res.status(StatusCodes.CONFLICT).json({
 				success: false,
-				message: 'user already exists',
+				message: "user already exists",
 				data: {},
 			});
 		}
 
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Internal Server Error',
+			message: "Internal Server Error",
 			data: {},
 		});
 	}
 };
 
 /* ---------------------------------- ANCHOR login --------------------------------- */
-export const loginHandler = async (
-	req: Request<{}, {}, LoginBody>,
-	res: Response
-) => {
+export const loginHandler = async (req: Request<{}, {}, LoginBody>, res: Response) => {
 	try {
 		const { email, password } = req.body;
 
@@ -80,7 +74,7 @@ export const loginHandler = async (
 		if (!user || !(await user.comparePassword(password))) {
 			return res.status(StatusCodes.UNAUTHORIZED).json({
 				success: false,
-				message: 'Please check email or password',
+				message: "Please check email or password",
 				data: {},
 			});
 		}
@@ -88,11 +82,11 @@ export const loginHandler = async (
 		// generate jwt token
 		const token = generateJWT({ id: user._id });
 
-		httpOnlyCookie('token', token, res);
+		httpOnlyCookie("token", token, res);
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'User logged in successfully',
+			message: "User logged in successfully",
 			data: user,
 		});
 	} catch (err) {
@@ -100,7 +94,7 @@ export const loginHandler = async (
 
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Please check your email or password',
+			message: "Please check your email or password",
 			data: {},
 		});
 	}
@@ -109,9 +103,9 @@ export const loginHandler = async (
 /* ---------------------------------- ANCHOR logout --------------------------------- */
 
 export const logoutHandler = (req: Request, res: Response) =>
-	res.clearCookie('token').status(StatusCodes.OK).json({
+	res.clearCookie("token").status(StatusCodes.OK).json({
 		success: true,
-		message: 'User logged out successfully',
+		message: "User logged out successfully",
 		data: {},
 	});
 
@@ -126,18 +120,18 @@ export const isLoggedInHandler = async (req: Request, res: Response) => {
 		if (!isLoggedIn) {
 			return res.status(StatusCodes.UNAUTHORIZED).json({
 				success: false,
-				message: 'User is not logged in',
+				message: "User is not logged in",
 				data: {},
 			});
 		}
 
 		const user = await UserModel.findById(isLoggedIn.id)
-			.populate('properties')
-			.populate('listings');
+			.populate("properties")
+			.populate("listings");
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'User is logged in',
+			message: "User is logged in",
 			data: user,
 		});
 	} catch (err) {
@@ -145,7 +139,7 @@ export const isLoggedInHandler = async (req: Request, res: Response) => {
 
 		return res.status(StatusCodes.UNAUTHORIZED).json({
 			success: false,
-			message: 'User is not logged in',
+			message: "User is not logged in",
 			data: {},
 		});
 	}
