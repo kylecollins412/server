@@ -1,6 +1,12 @@
-import { prop, getModelForClass, Ref } from '@typegoose/typegoose';
-import mongoose from 'mongoose';
+import { prop, getModelForClass } from "@typegoose/typegoose";
+import mongoose from "mongoose";
 
+/**
+ * Property model
+ *
+ * @export
+ * @class Property
+ */
 export class Property {
 	@prop({ required: true })
 	public title: string;
@@ -14,22 +20,22 @@ export class Property {
 	@prop()
 	public specialPrice: string;
 
-	@prop({ required: true, enum: ['Rental', 'Sale', 'PG'], default: 'Sale' })
+	@prop({ required: true, enum: ["Rental", "Sale", "PG"], default: "Sale" })
 	public type: string;
 
 	@prop({
 		required: true,
 		enum: [
-			'Residential Apartment',
-			'Independent House/Villa',
-			'Plot',
-			'Commercial Office',
-			'Serviced Apartments',
-			'1 RK/ Studio Apartment',
-			'Independent/Builder Floor',
-			'Other',
+			"Residential Apartment",
+			"Independent House/Villa",
+			"Plot",
+			"Commercial Office",
+			"Serviced Apartments",
+			"1 RK/ Studio Apartment",
+			"Independent/Builder Floor",
+			"Other",
 		],
-		default: 'Independent/Builder Floor',
+		default: "Independent/Builder Floor",
 	})
 	public category: string;
 
@@ -41,8 +47,8 @@ export class Property {
 
 	@prop({
 		required: true,
-		enum: ['Unfurnished', 'Semifurnished', 'Furnished'],
-		default: 'Unfurnished',
+		enum: ["Unfurnished", "Semifurnished", "Furnished"],
+		default: "Unfurnished",
 	})
 	public status: string;
 
@@ -54,19 +60,19 @@ export class Property {
 
 	@prop({
 		enum: [
-			'Sq. Ft.',
-			'Acre',
-			'Gaj',
-			'Marla',
-			'Bigha',
-			'Bigha-Pucca',
-			'Bigha-Kachha',
-			'Biswa',
-			'Biswa-Pucca',
-			'Kanal',
-			'Killa',
-			'Kattha',
-			'Ghumaon',
+			"Sq. Ft.",
+			"Acre",
+			"Gaj",
+			"Marla",
+			"Bigha",
+			"Bigha-Pucca",
+			"Bigha-Kachha",
+			"Biswa",
+			"Biswa-Pucca",
+			"Kanal",
+			"Killa",
+			"Kattha",
+			"Ghumaon",
 		],
 	})
 	public unit: string;
@@ -112,24 +118,24 @@ export class Property {
 
 	@prop({
 		enum: [
-			'North',
-			'South',
-			'East',
-			'West',
-			'North-East',
-			'North-West',
-			'South-East',
-			'South-West',
+			"North",
+			"South",
+			"East",
+			"West",
+			"North-East",
+			"North-West",
+			"South-East",
+			"South-West",
 		],
 	})
 	public direction: string;
 
-	@prop({ enum: ['New Booking', 'Resale'], default: 'New Booking' })
+	@prop({ enum: ["New Booking", "Resale"], default: "New Booking" })
 	public purchaseType: string;
 
 	@prop({
-		enum: ['Ready to Move', 'Under Construction'],
-		default: 'Ready to Move',
+		enum: ["Ready to Move", "Under Construction"],
+		default: "Ready to Move",
 	})
 	public constructionStatus: string;
 
@@ -168,21 +174,21 @@ export class Property {
 
 	@prop({
 		required: true,
-		default: 'Immediate',
+		default: "Immediate",
 		enum: [
-			'Immediate',
-			'Between 1 Month',
-			'Between 2 Month',
-			'Between 3 Month',
-			'Between 6 Months',
-			'2023',
-			'2024',
-			'2025',
-			'2026',
-			'2027',
-			'2028',
-			'2029',
-			'2030',
+			"Immediate",
+			"Between 1 Month",
+			"Between 2 Month",
+			"Between 3 Month",
+			"Between 6 Months",
+			"2023",
+			"2024",
+			"2025",
+			"2026",
+			"2027",
+			"2028",
+			"2029",
+			"2030",
 		],
 	})
 	public possession: string;
