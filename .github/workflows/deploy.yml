@@ -1,0 +1,48 @@
+name: CICD for server
+
+on:
+    push: branches
+        - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                node-version: [16.x]
+
+        steps:
+            - uses: actions/checkout@v2
+            - name: User node js
+              uses: actions/setup-node@v1
+              with:
+                  node-version: ${{matrix.node-version}}
+            - name: npm install and build
+              run: |
+                  npm install
+                  npm run build
+
+              env: 
+                CI: true
+    deploy:
+        needs: [build]
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: SSH Deploy
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USER }}
+                key: ${{ secrets.KEY }}
+                port: ${{ secrets.PORT }}
+
+                script: |
+                curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+                nvm install 16
+                npm install -g pm2
+                cd ~/server
+                git pull origin main
+                npm install
+                npm run build
+                pm2 restart Server
