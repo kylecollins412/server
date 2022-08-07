@@ -11,7 +11,7 @@
 	"scripts": {
 		"start": "node app.js",
 		"dev": "tsnd --exit-child --transpile-only app.ts",
-		"prebuild": "yarn install"
+		"build": "tsc --build"
 	},
 	"dependencies": {
 		"@typegoose/typegoose": "^9.8.0",
