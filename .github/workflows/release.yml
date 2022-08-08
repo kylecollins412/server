@@ -1,4 +1,4 @@
-name: Create new Releases
+name: Create new Release
 
 on:
     push:
