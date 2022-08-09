@@ -9,7 +9,7 @@
 		"url": "https://github.com/shriproperty/server"
 	},
 	"scripts": {
-		"start": "node app.js",
+		"start": "node build/app.js",
 		"dev": "tsnd --exit-child --transpile-only app.ts",
 		"build": "tsc --build"
 	},
