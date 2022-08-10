@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest an idea for this project
 title: FEATURE -
-labels: feature, server, priority-medium
+labels: feature, server
 assignees: ""
 ---
 
