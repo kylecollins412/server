@@ -14,7 +14,7 @@ jobs:
             - uses: EndBug/label-sync@v2
               with:
                   # If you want to use a source repo, you can put is name here (only the owner/repo format is accepted)
-                  source-repo: shriproperty/.github
+                  source-repo: shriproperty/server
 
                   # If you want to delete any additional label, set this to true
                   delete-other-labels: true
