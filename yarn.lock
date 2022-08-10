@@ -2104,13 +2104,13 @@ eslint-plugin-import@2.26.0:
     resolve "^1.22.0"
     tsconfig-paths "^3.14.1"
 
-eslint-plugin-jsonc@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jsonc/-/eslint-plugin-jsonc-2.0.0.tgz#4e3f77da6024e63618727400b61aa2a9d3aae9ee"
-  integrity sha512-5UbUUvx4gUVeF9hJ+SHDW9a4OPQ8vJWu12rttQ76qGO2tlH17OC103CLq+vrmjo5VQULeVzSJ0u4s+jUATJyWQ==
+eslint-plugin-jsonc@2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jsonc/-/eslint-plugin-jsonc-2.3.1.tgz#2048b559dc4239bf3c9c0f52d945c7e12e210c19"
+  integrity sha512-8sgWGWiVRMFL6xGawRymrE4RjZJgiU0rXYgFFb71wvdwuUkPgWSvfFtc8jfwcgjjqFjis8vzCUFsg7SciMEDWw==
   dependencies:
     eslint-utils "^3.0.0"
-    jsonc-eslint-parser "^2.0.1"
+    jsonc-eslint-parser "^2.0.4"
     natural-compare "^1.4.0"
 
 eslint-plugin-no-secrets@0.8.9:
@@ -3401,13 +3401,12 @@ json5@^1.0.1:
   dependencies:
     minimist "^1.2.0"
 
-jsonc-eslint-parser@^2.0.1:
-  version "2.0.4"
-  resolved "https://registry.npmjs.org/jsonc-eslint-parser/-/jsonc-eslint-parser-2.0.4.tgz"
-  integrity sha512-a3ZRus4qea0tSRCW2qvF/spFt7iCpdeJbiDjxbFZRZ87JCF8sI8hbxpVvUBVyZ3fLB/RQnTi+Y/yZbMlqt1BCg==
+jsonc-eslint-parser@^2.0.4:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/jsonc-eslint-parser/-/jsonc-eslint-parser-2.1.0.tgz#4c126b530aa583d85308d0b3041ff81ce402bbb2"
+  integrity sha512-qCRJWlbP2v6HbmKW7R3lFbeiVWHo+oMJ0j+MizwvauqnCV/EvtAeEeuCgoc/ErtsuoKgYB8U4Ih8AxJbXoE6/g==
   dependencies:
     acorn "^8.5.0"
-    eslint-utils "^3.0.0"
     eslint-visitor-keys "^3.0.0"
     espree "^9.0.0"
     semver "^7.3.5"
