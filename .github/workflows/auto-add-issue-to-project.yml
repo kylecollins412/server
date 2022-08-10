@@ -6,7 +6,11 @@ on:
             - opened
             - transferred
             - labeled
-
+            - milestoned
+            - assigned
+            - closed
+            - deleted
+            - edited
 jobs:
     add-to-project:
         name: Add issue to project
