@@ -4,7 +4,14 @@ on:
     types: [merge-command]
 
 jobs:
-  auto-merge:
+  auto-merge-bot:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: kenhowardpdx/auto-merge-action@v1
+      - uses: actions/checkout@v0.3
+      - name: Run Codeowners merge check
+        uses: casassg/auto-merge-bot@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          merge_method: "squash"
