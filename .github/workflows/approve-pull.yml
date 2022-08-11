@@ -10,7 +10,7 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-    - run: echo ${{ github.event.client_payload.slash_command.args.all }}
+    - run: echo ${{ github.event.client_payload.slash_command }}
     - uses: hmarr/auto-approve-action@v2
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
