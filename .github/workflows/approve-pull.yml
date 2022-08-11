@@ -1,16 +1,15 @@
+name: Auto approve
+
 on:
   repository_dispatch:
      types: [approve-command]
 
 jobs:
-  approve-prs:
+  auto-approve:
     runs-on: ubuntu-latest
-    name: Approve valid PRs 
+    permissions:
+      pull-requests: write
     steps:
-      - name: Approve valid workflows
-        uses: Cian911/gomerge-action@master
-        with:
-          repository: ${{ github.repository }}
-          github_token: ${{ secrets.GH_TOKEN }}
-          labels: "approved"
-          approve: "true"
+    - uses: hmarr/auto-approve-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
