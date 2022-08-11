@@ -17,5 +17,6 @@ jobs:
                       close
                       approve
                       merge
+                      label
                   static-args: |
                      ${{ github.event.number }}
