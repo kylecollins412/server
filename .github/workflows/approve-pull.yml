@@ -3,17 +3,16 @@ name: Auto approve
 on:
   repository_dispatch:
      types: [approve-command]
-     inputs:
-      pull-request:
-        description: Pull Request Number
-        required: false
-
+     
 jobs:
   auto-approve:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
     steps:
+    - run: echo ${{ github.event.client_payload.slash_command.args.all }}
     - uses: hmarr/auto-approve-action@v2
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
+        pull-request-number: ${{ github.event.client_payload.slash_command.args.all }}
+        
