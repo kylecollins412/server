@@ -8,6 +8,6 @@ jobs:
         - name: Close Issue
           uses: peter-evans/close-issue@v2
           with:
-            issue-number: ${{github.event.issue.number}}
+            issue-number: ${{ github.event.client_payload.slash_command.args.all }}
             comment: |
               Auto-closing this issue.
