@@ -3,6 +3,10 @@ name: Auto approve
 on:
   repository_dispatch:
      types: [approve-command]
+     inputs:
+      pull-request:
+        description: Pull Request Number
+        required: false
 
 jobs:
   auto-approve:
