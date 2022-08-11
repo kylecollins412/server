@@ -1,14 +1,10 @@
-name: Auto-Merge
+name: Merge Command
 on:
   repository_dispatch:
-     types: [merge-command]
+    types: [merge-command]
 
 jobs:
-  enable-auto-merge:
+  auto-merge:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: alexwilson/enable-github-automerge-action@main
-      with:
-        github-token: "${{ secrets.GH_TOKEN }}"
-        merge-method: "SQUASH"
+      - uses: kenhowardpdx/auto-merge-action@v1
