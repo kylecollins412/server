@@ -1,13 +1,8 @@
 name: Sync labels
 on:
-    # You can run this with every type of event, but it's better to run it only when you actually need it.
-    issues:
-        types:
-            - opened
-    pull_request:
-        types:
-            - opened
     workflow_dispatch:
+    schedule:
+        - cron: "0 */1 * * *"
 
 jobs:
     labels:

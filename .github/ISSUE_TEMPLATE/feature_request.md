@@ -1,7 +1,7 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: FEATURE -
+title: ":sparkles: "
 labels: feature, server
 assignees: ""
 ---

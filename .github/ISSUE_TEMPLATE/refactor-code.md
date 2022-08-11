@@ -1,7 +1,7 @@
 ---
 name: Refactor Code
 about: Tell us how we can refactor our code
-title: REFACTOR CODE -
+title: ":recycle: "
 labels: feature, server
 assignees: ""
 ---
