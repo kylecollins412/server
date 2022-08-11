@@ -19,3 +19,5 @@ jobs:
                       merge
                   static-args: |
                      ${{ github.event.number }}
+            - name: Output command and arguments
+            - run: echo ${{ github.event.client_payload.slash_command.args.all }}
