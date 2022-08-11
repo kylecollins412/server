@@ -1,16 +1,37 @@
 name: Merge Command
 on:
-  repository_dispatch:
-    types: [merge-command]
+    repository_dispatch:
+        types: [merge-command]
 
 jobs:
-  automerge:
-    runs-on: ubuntu-latest
-    steps:
-      - id: automerge
-        name: automerge
-        uses: "pascalgn/automerge-action@v0.15.3"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
-          MERGE_METHOD: "squash"
-          MERGE_COMMIT_MESSAGE: "pull-request-title"
+    auto-approve:
+        runs-on: ubuntu-latest
+        permissions:
+            pull-requests: write
+        steps:
+            - uses: hmarr/auto-approve-action@v2
+              with:
+                  github-token: ${{ secrets.GH_TOKEN }}
+                  pull-request-number: ${{ github.event.client_payload.slash_command.args.all }}
+
+      add_label:
+           needs: [auto-approve]
+            runs-on: ubuntu-latest
+            steps:
+                - uses: actions/checkout@v2
+                - uses: actions-ecosystem/action-add-labels@v1
+                  with:
+                      number: ${{ github.event.client_payload.slash_command.args.args.all }}
+                      labels: automerge
+
+        automerge:
+            needs: [add_label]
+            runs-on: ubuntu-latest
+            steps:
+                - id: automerge
+                  name: automerge
+                  uses: "pascalgn/automerge-action@v0.15.3"
+                  env:
+                      GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+                      MERGE_METHOD: "squash"
+                      MERGE_COMMIT_MESSAGE: "pull-request-title"
