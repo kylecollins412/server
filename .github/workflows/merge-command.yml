@@ -4,14 +4,13 @@ on:
     types: [merge-command]
 
 jobs:
-  auto-merge-bot:
+  automerge:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Run Codeowners merge check
-        uses: casassg/auto-merge-bot@master
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.3"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          merge_method: "squash"
+          GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
+          MERGE_METHOD: "squash"
+          MERGE_COMMIT_MESSAGE: "pull-request-description"
