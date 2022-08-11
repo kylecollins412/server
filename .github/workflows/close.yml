@@ -5,9 +5,8 @@ jobs:
   closeIssue:
     runs-on: ubuntu-latest
     steps:
-    - name: Close issue
-      uses: peter-evans/close-issue@v1
-      with:
-          issue-number: ${{ github.event.issue.number }}
-          comment: "Auto-closing this issue."
-          token: ${{ secrets.GH_TOKEN }}
+        - name: Close Issue
+          uses: peter-evans/close-issue@v2
+          with:
+            comment: |
+              Auto-closing this issue.
