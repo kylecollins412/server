@@ -11,5 +11,15 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions-ecosystem/action-add-labels@v1
         with:
-          labels: ${{ github.event.client_payload.slash_command.args.unnamed.all }}
-          number: ${{ github.event.client_payload.slash_command.args.named.id }}
+          labels: |
+             ${{ github.event.client_payload.slash_command.args.unnamed.arg2 }}
+             ${{ github.event.client_payload.slash_command.args.unnamed.arg3 }}
+             ${{ github.event.client_payload.slash_command.args.unnamed.arg4 }}
+             ${{ github.event.client_payload.slash_command.args.unnamed.arg5 }}
+             ${{ github.event.client_payload.slash_command.args.unnamed.arg6 }}
+             ${{ github.event.client_payload.slash_command.args.unnamed.arg7 }}
+             ${{ github.event.client_payload.slash_command.args.unnamed.arg8 }}
+             ${{ github.event.client_payload.slash_command.args.unnamed.arg9 }}
+             ${{ github.event.client_payload.slash_command.args.unnamed.arg10 }}
+             ${{ github.event.client_payload.slash_command.args.unnamed.arg11 }}
+          number: ${{ github.event.client_payload.slash_command.args.named.arg1 }}
