@@ -1,0 +1,13 @@
+on:
+  repository_dispatch:
+    types: [close-command]
+jobs:
+  closeIssue:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Close Issue
+          uses: peter-evans/close-issue@v2
+          with:
+           comment: |
+            Issue title must start with 'ABC-'.
+            Auto-closing this issue.
