@@ -17,3 +17,5 @@ jobs:
                       close
                       approve
                       merge
+                  static-args: |
+                     ${{ github.event.number }}
