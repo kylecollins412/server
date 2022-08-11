@@ -1,0 +1,14 @@
+name: Add Label
+
+on:
+  repository_dispatch:
+     types: [label-command]
+
+jobs:
+  add_label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-ecosystem/action-add-labels@v1
+        with:
+          labels: ${{ github.event.client_payload.slash_command.args.all }}
