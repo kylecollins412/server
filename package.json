@@ -14,7 +14,7 @@
 		"build": "tsc --build"
 	},
 	"dependencies": {
-		"@typegoose/typegoose": "^9.8.0",
+		"@typegoose/typegoose": "^9.11.0",
 		"aws-sdk": "^2.1059.0",
 		"bcrypt": "^5.0.1",
 		"compression": "^1.7.4",
