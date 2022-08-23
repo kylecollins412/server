@@ -1,6 +1,6 @@
 {
 	"name": "shriproperty",
-	"version": "2.1.0",
+	"version": "2.2.2",
 	"main": "app.js",
 	"license": "MIT",
 	"module": "2022",
@@ -9,8 +9,8 @@
 		"url": "https://github.com/shriproperty/server"
 	},
 	"scripts": {
-		"start": "node build/app.js",
-		"dev": "tsnd --exit-child --transpile-only app.ts",
+		"start": "node build/server.js",
+		"dev": "tsnd --exit-child --transpile-only src/server.ts",
 		"build": "tsc --build"
 	},
 	"dependencies": {

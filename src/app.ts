@@ -6,14 +6,13 @@ import { config } from "dotenv";
 import express, { Request, Response } from "express";
 import { unlink } from "fs";
 import helmet from "helmet";
-import mongoose from "mongoose";
 import cron from "node-cron";
 import path from "path";
 import deserializeUser from "./middlewares/deserializeUser.middleware";
 
 config();
 
-import logger from "./helpers/logger.helper";
+import logger from "./config/logger.config";
 import { uploadFileToS3 } from "./helpers/s3.helper";
 import apiAuth from "./middlewares/apiAuth.middleware";
 import authRouter from "./routes/auth.routes";
@@ -25,8 +24,6 @@ import propertyRouter from "./routes/property.routes";
 import userRouter from "./routes/user.routes";
 
 const app = express();
-
-const DB_URI = process.env.DB_URI as string;
 
 /* ------------------------------- ANCHOR middlewares ------------------------------ */
 app.use(cors());
@@ -92,11 +89,5 @@ if (process.env.NODE_ENV === "production") {
 		res.sendFile(path.join(__dirname, "../../client/build/index.html"));
 	});
 }
-
-const PORT = process.env.PORT || 8000;
-
-mongoose.connect(DB_URI, () => {
-	app.listen(PORT);
-});
 
 export default app;

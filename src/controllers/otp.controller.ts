@@ -1,6 +1,6 @@
 import { OtpModel } from "../models/otp.model";
 import { sendEmail } from "../helpers/email.helper";
-import logger from "../helpers/logger.helper";
+import logger from "../config/logger.config";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { SendOtpBody, VerifyOtpSchema } from "../schemas/otp.schema";

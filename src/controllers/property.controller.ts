@@ -1,20 +1,20 @@
-import { PropertyModel } from '../models/property.model';
-import { ListingModel } from '../models/listing.model';
-import logger from '../helpers/logger.helper';
-import { UserModel } from '../models/user.model';
-import { z } from 'zod';
+import { PropertyModel } from "../models/property.model";
+import { ListingModel } from "../models/listing.model";
+import logger from "../config/logger.config";
+import { UserModel } from "../models/user.model";
+import { z } from "zod";
 
 import {
 	deleteMultipleFilesFromDisk,
 	deleteSingleFileFromDisk,
-} from '../helpers/deleteFiles.helper';
+} from "../helpers/deleteFiles.helper";
 import {
 	uploadFileToS3,
 	deleteMultipleFilesFromS3,
 	deleteSingleFileFromS3,
-} from '../helpers/s3.helper';
+} from "../helpers/s3.helper";
 
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 import {
 	CreatePropertyBody,
 	createPropertySchema,
@@ -26,8 +26,8 @@ import {
 	UpdatePropertyBody,
 	UpdatePropertyParams,
 	updatePropertySchema,
-} from '../schemas/property.schema';
-import { StatusCodes } from 'http-status-codes';
+} from "../schemas/property.schema";
+import { StatusCodes } from "http-status-codes";
 
 interface GetAllPropertiesConditions {
 	title?: any;
@@ -48,7 +48,7 @@ interface GetAllPropertiesConditions {
 /* ----------------------------- SECTION create property ----------------------------- */
 export const createPropertyHandler = async (
 	req: Request<{}, {}, CreatePropertyBody>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		const parsedFacilities: Facility[] = [];
@@ -67,11 +67,11 @@ export const createPropertyHandler = async (
 			const fileObject = { url: response.Location, key: response.Key };
 
 			// push file paths to respective arrays
-			if (file.fieldname === 'images') {
+			if (file.fieldname === "images") {
 				images.push(fileObject);
-			} else if (file.fieldname === 'videos') {
+			} else if (file.fieldname === "videos") {
 				videos.push(fileObject);
-			} else if (file.fieldname === 'documents') {
+			} else if (file.fieldname === "documents") {
 				documents.push(fileObject);
 			}
 
@@ -83,9 +83,7 @@ export const createPropertyHandler = async (
 
 		// Parse Facilities
 		if (req.body.facilities && req.body.facilities.length > 0) {
-			req.body.facilities.forEach(facility =>
-				parsedFacilities.push(JSON.parse(facility))
-			);
+			req.body.facilities.forEach((facility) => parsedFacilities.push(JSON.parse(facility)));
 		}
 
 		// create new property
@@ -138,7 +136,7 @@ export const createPropertyHandler = async (
 		// send response
 		return res.status(StatusCodes.CREATED).json({
 			success: true,
-			message: 'Property created successfully',
+			message: "Property created successfully",
 			data: property,
 		});
 	} catch (err) {
@@ -158,7 +156,7 @@ export const createPropertyHandler = async (
 
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Internal Server Error',
+			message: "Internal Server Error",
 			data: {},
 		});
 	}
@@ -169,7 +167,7 @@ export const createPropertyHandler = async (
 // /* --------------------------- SECTION get all properties --------------------------- */
 export const getAllPropertiesHandler = async (
 	req: Request<{}, {}, {}, GetAllPropertiesQuery>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		const {
@@ -186,9 +184,7 @@ export const getAllPropertiesHandler = async (
 		} = req.query;
 
 		// minimum and maximum price that exists in db
-		const maxPrice = await PropertyModel.find()
-			.sort({ price: -1 })
-			.limit(1);
+		const maxPrice = await PropertyModel.find().sort({ price: -1 }).limit(1);
 		const minPrice = await PropertyModel.find()
 			.sort({ price: +1 })
 			.limit(1);
@@ -198,17 +194,17 @@ export const getAllPropertiesHandler = async (
 		// ANCHOR Conditions
 		if (title) {
 			conditions.title = {
-				$regex: new RegExp('^' + title.toLowerCase(), 'i'),
+				$regex: new RegExp("^" + title.toLowerCase(), "i"),
 			};
 		}
 
-		if (featured && featured === 'true') {
+		if (featured && featured === "true") {
 			conditions.featured = true;
 		}
 
-		if (price && price.split(',').length > 0) {
-			const min = price.split(',')[0];
-			const max = price.split(',')[1];
+		if (price && price.split(",").length > 0) {
+			const min = price.split(",")[0];
+			const max = price.split(",")[1];
 
 			conditions.price = { $gte: +min, $lte: +max };
 		}
@@ -246,7 +242,7 @@ export const getAllPropertiesHandler = async (
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'All properties fetched successfully',
+			message: "All properties fetched successfully",
 			data: properties,
 			maxPrice: maxPrice.length > 0 ? maxPrice[0].price : 100,
 			minPrice: minPrice.length > 0 ? minPrice[0].price : 0,
@@ -256,7 +252,7 @@ export const getAllPropertiesHandler = async (
 
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Internal Server Error',
+			message: "Internal Server Error",
 			data: {},
 		});
 	}
@@ -267,7 +263,7 @@ export const getAllPropertiesHandler = async (
 /* --------------------------- SECTION get single property -------------------------- */
 export const getSinglePropertyHandler = async (
 	req: Request<GetSinglePropertyParams>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		const { id } = req.params;
@@ -276,7 +272,7 @@ export const getSinglePropertyHandler = async (
 
 		res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'Property fetched successfully',
+			message: "Property fetched successfully",
 			data: property,
 		});
 	} catch (err) {
@@ -284,7 +280,7 @@ export const getSinglePropertyHandler = async (
 
 		res.status(StatusCodes.BAD_REQUEST).json({
 			success: false,
-			message: 'Invalid Id',
+			message: "Invalid Id",
 			data: {},
 		});
 	}
@@ -295,7 +291,7 @@ export const getSinglePropertyHandler = async (
 /* ----------------------------- SECTION update property ---------------------------- */
 export const updatePropertyHandler = async (
 	req: Request<UpdatePropertyParams, {}, UpdatePropertyBody>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		// ANCHOR get inputs
@@ -315,7 +311,7 @@ export const updatePropertyHandler = async (
 		if (!propertyFromDB) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'Invalid Id',
+				message: "Invalid Id",
 				data: {},
 			});
 		}
@@ -331,11 +327,11 @@ export const updatePropertyHandler = async (
 				};
 
 				// push file paths to respective arrays
-				if (file.fieldname === 'images') {
+				if (file.fieldname === "images") {
 					images.push(fileObject);
-				} else if (file.fieldname === 'videos') {
+				} else if (file.fieldname === "videos") {
 					videos.push(fileObject);
-				} else if (file.fieldname === 'documents') {
+				} else if (file.fieldname === "documents") {
 					documents.push(fileObject);
 				}
 
@@ -345,9 +341,7 @@ export const updatePropertyHandler = async (
 		}
 
 		if (req.body.facilities && req.body.facilities.length > 0) {
-			req.body.facilities.forEach(facility =>
-				parsedFacilities.push(JSON.parse(facility))
-			);
+			req.body.facilities.forEach((facility) => parsedFacilities.push(JSON.parse(facility)));
 		}
 
 		// ANCHOR  update property
@@ -405,13 +399,13 @@ export const updatePropertyHandler = async (
 						? [...propertyFromDB.documents, ...documents]
 						: propertyFromDB.documents,
 			},
-			{ new: true }
+			{ new: true },
 		);
 
 		// send response
 		res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'Property updated successfully',
+			message: "Property updated successfully",
 			data: updatedProperty,
 		});
 	} catch (err) {
@@ -431,7 +425,7 @@ export const updatePropertyHandler = async (
 
 		res.status(StatusCodes.NOT_FOUND).json({
 			success: false,
-			message: 'Invalid Id',
+			message: "Invalid Id",
 			data: {},
 		});
 	}
@@ -440,10 +434,7 @@ export const updatePropertyHandler = async (
 /* ---------------------- !SECTION update property end ---------------------- */
 
 /* ----------------------------- SECTION delete property ---------------------------- */
-export const deletePropertyHandler = async (
-	req: Request<DeletePropertyParams>,
-	res: Response
-) => {
+export const deletePropertyHandler = async (req: Request<DeletePropertyParams>, res: Response) => {
 	try {
 		const { id } = req.params;
 
@@ -452,16 +443,12 @@ export const deletePropertyHandler = async (
 		if (!property) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'Invalid Id',
+				message: "Invalid Id",
 				data: {},
 			});
 		}
 
-		const filesArray = [
-			...property.images,
-			...property.documents,
-			...property.videos,
-		];
+		const filesArray = [...property.images, ...property.documents, ...property.videos];
 
 		// delete files from s3
 
@@ -469,11 +456,9 @@ export const deletePropertyHandler = async (
 
 		// get property owner from database
 		if (property.ownerId) {
-			const user = (await UserModel.findById(
-				property.ownerId.toString()
-			)) as User;
+			const user = (await UserModel.findById(property.ownerId.toString())) as User;
 
-			const newPropertyList = user.properties.filter(prop => {
+			const newPropertyList = user.properties.filter((prop) => {
 				if (prop) {
 					return prop.toString() !== property._id.toString();
 				}
@@ -489,7 +474,7 @@ export const deletePropertyHandler = async (
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'Property deleted successfully',
+			message: "Property deleted successfully",
 			data: deletedProperty,
 		});
 	} catch (err) {
@@ -497,7 +482,7 @@ export const deletePropertyHandler = async (
 
 		return res.status(StatusCodes.NOT_FOUND).json({
 			success: false,
-			message: 'Invalid Id',
+			message: "Invalid Id",
 			data: {},
 		});
 	}
@@ -508,7 +493,7 @@ export const deletePropertyHandler = async (
 /* -------------------------- SECTION delete specific File -------------------------- */
 export const deleteSpecificFileFromPropertyHandler = async (
 	req: Request<DeleteSpecificFileFromPropertyParams>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		const { key, id, type } = req.params;
@@ -518,32 +503,26 @@ export const deleteSpecificFileFromPropertyHandler = async (
 		if (!property) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'Invalid Id',
+				message: "Invalid Id",
 				data: {},
 			});
 		}
 
 		// delete files from property
-		if (type === 'images') {
-			const newImagesArray = property.images.filter(
-				image => image.key !== key
-			);
+		if (type === "images") {
+			const newImagesArray = property.images.filter((image) => image.key !== key);
 
 			property.images = newImagesArray;
 
 			property.save();
-		} else if (type === 'videos') {
-			const newVideosArray = property.videos.filter(
-				video => video.key !== key
-			);
+		} else if (type === "videos") {
+			const newVideosArray = property.videos.filter((video) => video.key !== key);
 
 			property.videos = newVideosArray;
 
 			property.save();
-		} else if (type === 'documents') {
-			const newDocumentsArray = property.documents.filter(
-				document => document.key !== key
-			);
+		} else if (type === "documents") {
+			const newDocumentsArray = property.documents.filter((document) => document.key !== key);
 
 			property.documents = newDocumentsArray;
 
@@ -555,7 +534,7 @@ export const deleteSpecificFileFromPropertyHandler = async (
 
 		res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'File deleted successfully',
+			message: "File deleted successfully",
 			data: {},
 		});
 	} catch (err) {
@@ -563,7 +542,7 @@ export const deleteSpecificFileFromPropertyHandler = async (
 
 		res.status(StatusCodes.NOT_FOUND).json({
 			success: false,
-			message: 'Invalid key',
+			message: "Invalid key",
 			data: {},
 		});
 	}
@@ -574,7 +553,7 @@ export const deleteSpecificFileFromPropertyHandler = async (
 /* --------------------------------- SECTION move property to listings to approve them -------------------------------- */
 export const movePropertyToListingsHandler = async (
 	req: Request<MovePropertyToListingsParams>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		const { id } = req.params;
@@ -585,7 +564,7 @@ export const movePropertyToListingsHandler = async (
 		if (!property) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'Invalid Id',
+				message: "Invalid Id",
 				data: {},
 			});
 		}
@@ -597,7 +576,7 @@ export const movePropertyToListingsHandler = async (
 		if (!user) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'User Not Found',
+				message: "User Not Found",
 				data: {},
 			});
 		}
@@ -611,7 +590,7 @@ export const movePropertyToListingsHandler = async (
 		// create new property from listing
 		const newListing = await ListingModel.create(newPropertyObject);
 
-		const newProperties = user.properties.filter(prop => {
+		const newProperties = user.properties.filter((prop) => {
 			if (prop) {
 				return prop.toString() !== id;
 			}
@@ -628,13 +607,13 @@ export const movePropertyToListingsHandler = async (
 		// send response
 		res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'Property moved to listings',
+			message: "Property moved to listings",
 			data: newListing,
 		});
 	} catch (err) {
 		res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Internal server error',
+			message: "Internal server error",
 			data: {},
 		});
 	}

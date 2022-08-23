@@ -1,6 +1,6 @@
-import { config } from 'dotenv';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import logger from '../helpers/logger.helper';
+import { config } from "dotenv";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import logger from "../config/logger.config";
 
 config();
 
@@ -11,10 +11,7 @@ const JWT_SECRET = process.env.JWT_SECRET as string;
  * @param {string | Buffer | object} body body of token
  * @param {expire | undefined} expire after what time token should expire automatically
  */
-export const generateJWT = (
-	body: string | Buffer | object,
-	expire?: string
-): string => {
+export const generateJWT = (body: string | Buffer | object, expire?: string): string => {
 	if (expire) {
 		return jwt.sign(body, JWT_SECRET, {
 			expiresIn: expire,

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const getSingleUserSchema = {
 	params: z.object({
@@ -15,9 +15,9 @@ export type GetSingleUserQuery = z.TypeOf<typeof getSingleUserSchema.query>;
 
 export const resetPasswordSchema = {
 	body: z.object({
-		email: z.string({ required_error: 'email is required' }).email(),
+		email: z.string({ required_error: "email is required" }).email(),
 		newPassword: z.string({
-			required_error: 'new password field is required',
+			required_error: "new password field is required",
 		}),
 	}),
 };

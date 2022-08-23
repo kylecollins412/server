@@ -1,17 +1,17 @@
-import { ContactModel } from '../models/contact.model';
-import logger from '../helpers/logger.helper';
-import { Request, Response } from 'express';
-import { StatusCodes } from 'http-status-codes';
+import { ContactModel } from "../models/contact.model";
+import logger from "../config/logger.config";
+import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
 import {
 	CreateContactBody,
 	UpdateContactStatusBody,
 	UpdateContactStatusParams,
-} from '../schemas/contact.schema';
+} from "../schemas/contact.schema";
 
 /* ---------------------------------- ANCHOR create new ---------------------------------- */
 export const createNewContactHandler = async (
 	req: Request<{}, {}, CreateContactBody>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		// get input from user
@@ -26,7 +26,7 @@ export const createNewContactHandler = async (
 			return res.status(StatusCodes.CONFLICT).json({
 				success: false,
 				message:
-					'You have already submitted 3 contacts request wait until they are being processed',
+					"You have already submitted 3 contacts request wait until they are being processed",
 				data: {},
 			});
 		}
@@ -42,7 +42,7 @@ export const createNewContactHandler = async (
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'Contact request submitted successfully',
+			message: "Contact request submitted successfully",
 			data: newContact,
 		});
 	} catch (err) {
@@ -50,7 +50,7 @@ export const createNewContactHandler = async (
 
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Internal Server Error',
+			message: "Internal Server Error",
 			data: {},
 		});
 	}
@@ -63,7 +63,7 @@ export const getAllContactsHandler = async (req: Request, res: Response) => {
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'All contacts fetched successfully',
+			message: "All contacts fetched successfully",
 			data: contacts,
 		});
 	} catch (err) {
@@ -71,7 +71,7 @@ export const getAllContactsHandler = async (req: Request, res: Response) => {
 
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Internal Server Error',
+			message: "Internal Server Error",
 			data: {},
 		});
 	}
@@ -80,7 +80,7 @@ export const getAllContactsHandler = async (req: Request, res: Response) => {
 /* ------------------------------ ANCHOR update status ----------------------------- */
 export const updateContactStatus = async (
 	req: Request<UpdateContactStatusParams, {}, UpdateContactStatusBody>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		const { id } = req.params;
@@ -91,7 +91,7 @@ export const updateContactStatus = async (
 		if (!contact) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'contact not found',
+				message: "contact not found",
 				data: {},
 			});
 		}
@@ -103,24 +103,23 @@ export const updateContactStatus = async (
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'Contact status updated successfully',
+			message: "Contact status updated successfully",
 			data: contact,
 		});
 	} catch (err: any) {
 		logger.error(err);
 
-		if (err.errors.status.name === 'ValidatorError') {
+		if (err.errors.status.name === "ValidatorError") {
 			return res.status(StatusCodes.NOT_ACCEPTABLE).json({
 				success: false,
-				message:
-					'Status can be one of the following: Pending, In Progress, Completed',
+				message: "Status can be one of the following: Pending, In Progress, Completed",
 				data: err,
 			});
 		}
 
 		return res.status(StatusCodes.NOT_FOUND).json({
 			success: false,
-			message: 'Contact not found Invalid Id',
+			message: "Contact not found Invalid Id",
 			data: {},
 		});
 	}
@@ -136,14 +135,14 @@ export const deleteContactHandler = async (req: Request, res: Response) => {
 		if (!deletedContact) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'contact not found',
+				message: "contact not found",
 				data: {},
 			});
 		}
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'Contact deleted successfully',
+			message: "Contact deleted successfully",
 			data: deletedContact,
 		});
 	} catch (err) {
@@ -151,7 +150,7 @@ export const deleteContactHandler = async (req: Request, res: Response) => {
 
 		return res.status(StatusCodes.NOT_FOUND).json({
 			success: false,
-			message: 'Contact not found Invalid Id',
+			message: "Contact not found Invalid Id",
 			data: {},
 		});
 	}

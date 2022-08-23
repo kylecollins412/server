@@ -1,21 +1,21 @@
-import { ListingModel } from '../models/listing.model';
-import { PropertyModel } from '../models/property.model';
-import { UserModel } from '../models/user.model';
-import logger from '../helpers/logger.helper';
-import { z } from 'zod';
+import { ListingModel } from "../models/listing.model";
+import { PropertyModel } from "../models/property.model";
+import { UserModel } from "../models/user.model";
+import logger from "../config/logger.config";
+import { z } from "zod";
 
 import {
 	deleteMultipleFilesFromDisk,
 	deleteSingleFileFromDisk,
-} from '../helpers/deleteFiles.helper';
+} from "../helpers/deleteFiles.helper";
 
 import {
 	uploadFileToS3,
 	deleteMultipleFilesFromS3,
 	deleteSingleFileFromS3,
-} from '../helpers/s3.helper';
+} from "../helpers/s3.helper";
 
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 import {
 	ApproveListingParams,
 	CreateListingBody,
@@ -26,13 +26,13 @@ import {
 	UpdateListingBody,
 	UpdateListingParams,
 	updateListingSchema,
-} from '../schemas/listing.schema';
-import { StatusCodes } from 'http-status-codes';
+} from "../schemas/listing.schema";
+import { StatusCodes } from "http-status-codes";
 
 /* ----------------------------- SECTION add new listing ---------------------------- */
 export const createListingHandler = async (
 	req: Request<{}, {}, CreateListingBody>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		// ANCHOR Get Inputs
@@ -54,11 +54,11 @@ export const createListingHandler = async (
 			const fileObject = { url: response.Location, key: response.Key };
 
 			// push file paths to respective arrays
-			if (file.fieldname === 'images') {
+			if (file.fieldname === "images") {
 				images.push(fileObject);
-			} else if (file.fieldname === 'videos') {
+			} else if (file.fieldname === "videos") {
 				videos.push(fileObject);
-			} else if (file.fieldname === 'documents') {
+			} else if (file.fieldname === "documents") {
 				documents.push(fileObject);
 			}
 
@@ -68,9 +68,7 @@ export const createListingHandler = async (
 
 		// Parse Facilities
 		if (req.body.facilities && req.body.facilities.length > 0) {
-			req.body.facilities.forEach(facility =>
-				parsedFacilities.push(JSON.parse(facility))
-			);
+			req.body.facilities.forEach((facility) => parsedFacilities.push(JSON.parse(facility)));
 		}
 
 		// get user from database
@@ -79,7 +77,7 @@ export const createListingHandler = async (
 		if (!user) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'User not found',
+				message: "User not found",
 				data: {},
 			});
 		}
@@ -138,8 +136,7 @@ export const createListingHandler = async (
 		// send response
 		return res.status(StatusCodes.CREATED).json({
 			success: true,
-			message:
-				'Listing Add successfully It will be reviewed approved in 24 hours',
+			message: "Listing Add successfully It will be reviewed approved in 24 hours",
 			data: listing,
 		});
 	} catch (err) {
@@ -159,7 +156,7 @@ export const createListingHandler = async (
 
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Internal Server Error',
+			message: "Internal Server Error",
 			data: {},
 		});
 	}
@@ -174,7 +171,7 @@ export const getAllListingsHandler = async (req: Request, res: Response) => {
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'All properties fetched successfully',
+			message: "All properties fetched successfully",
 			data: properties,
 		});
 	} catch (err) {
@@ -182,7 +179,7 @@ export const getAllListingsHandler = async (req: Request, res: Response) => {
 
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Internal Server Error',
+			message: "Internal Server Error",
 			data: {},
 		});
 	}
@@ -193,7 +190,7 @@ export const getAllListingsHandler = async (req: Request, res: Response) => {
 /* --------------------------- SECTION get single property -------------------------- */
 export const getSingleListingHandler = async (
 	req: Request<GetSingleListingParams>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		const { id } = req.params;
@@ -203,21 +200,21 @@ export const getSingleListingHandler = async (
 		if (!property) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'Property not found',
+				message: "Property not found",
 				data: {},
 			});
 		}
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'Property fetched successfully',
+			message: "Property fetched successfully",
 			data: property,
 		});
 	} catch (err) {
 		logger.error(err);
 		return res.status(StatusCodes.NOT_FOUND).json({
 			success: false,
-			message: 'Invalid Id',
+			message: "Invalid Id",
 			data: {},
 		});
 	}
@@ -228,7 +225,7 @@ export const getSingleListingHandler = async (
 /* ----------------------------- SECTION update listing ---------------------------- */
 export const updateListingHandler = async (
 	req: Request<UpdateListingParams, {}, UpdateListingBody>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		// ANCHOR get inputs
@@ -250,7 +247,7 @@ export const updateListingHandler = async (
 		if (!listingFromDB) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'Invalid Id',
+				message: "Invalid Id",
 				data: {},
 			});
 		}
@@ -266,11 +263,11 @@ export const updateListingHandler = async (
 				};
 
 				// push file paths to respective arrays
-				if (file.fieldname === 'images') {
+				if (file.fieldname === "images") {
 					images.push(fileObject);
-				} else if (file.fieldname === 'videos') {
+				} else if (file.fieldname === "videos") {
 					videos.push(fileObject);
-				} else if (file.fieldname === 'documents') {
+				} else if (file.fieldname === "documents") {
 					documents.push(fileObject);
 				}
 
@@ -280,9 +277,7 @@ export const updateListingHandler = async (
 		}
 
 		if (req.body.facilities && req.body.facilities.length > 0) {
-			req.body.facilities.forEach(facility =>
-				parsedFacilities.push(JSON.parse(facility))
-			);
+			req.body.facilities.forEach((facility) => parsedFacilities.push(JSON.parse(facility)));
 		}
 
 		// ANCHOR  update property
@@ -327,26 +322,21 @@ export const updateListingHandler = async (
 					? JSON.parse(req.body.furnishingDetails)
 					: {},
 				images:
-					images.length > 0
-						? [...listingFromDB.images, ...images]
-						: listingFromDB.images,
+					images.length > 0 ? [...listingFromDB.images, ...images] : listingFromDB.images,
 				videos:
-					videos.length > 0
-						? [...listingFromDB.videos, ...videos]
-						: listingFromDB.videos,
+					videos.length > 0 ? [...listingFromDB.videos, ...videos] : listingFromDB.videos,
 				documents:
 					documents.length > 0
 						? [...listingFromDB.documents, ...documents]
 						: listingFromDB.documents,
 			},
-			{ new: true }
+			{ new: true },
 		);
 
 		// send response
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message:
-				'Listing Updated successfully It will be reviewed approved in 24 hours',
+			message: "Listing Updated successfully It will be reviewed approved in 24 hours",
 			data: updatedListing,
 		});
 	} catch (err) {
@@ -366,7 +356,7 @@ export const updateListingHandler = async (
 
 		return res.status(StatusCodes.NOT_FOUND).json({
 			success: false,
-			message: 'Invalid Id',
+			message: "Invalid Id",
 			data: {},
 		});
 	}
@@ -375,10 +365,7 @@ export const updateListingHandler = async (
 /* ---------------------- !SECTION update property end ---------------------- */
 
 /* ----------------------------- SECTION delete property ---------------------------- */
-export const deleteListingHandler = async (
-	req: Request<DeleteListingParams>,
-	res: Response
-) => {
+export const deleteListingHandler = async (req: Request<DeleteListingParams>, res: Response) => {
 	try {
 		const { id } = req.params;
 
@@ -387,7 +374,7 @@ export const deleteListingHandler = async (
 		if (!listing) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'listing not found please check id',
+				message: "listing not found please check id",
 				data: {},
 			});
 		}
@@ -398,22 +385,18 @@ export const deleteListingHandler = async (
 		if (!user) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'user not found',
+				message: "user not found",
 				data: {},
 			});
 		}
 
-		const filesArray = [
-			...listing.images,
-			...listing.documents,
-			...listing.videos,
-		];
+		const filesArray = [...listing.images, ...listing.documents, ...listing.videos];
 
 		// delete files from s3
 		await deleteMultipleFilesFromS3(filesArray);
 
 		// delete listing from user
-		const newListingArray = user.listings.filter(listing => {
+		const newListingArray = user.listings.filter((listing) => {
 			if (listing) return listing.toString() !== id;
 		});
 
@@ -427,7 +410,7 @@ export const deleteListingHandler = async (
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'Property deleted successfully',
+			message: "Property deleted successfully",
 			data: {},
 		});
 	} catch (err) {
@@ -435,7 +418,7 @@ export const deleteListingHandler = async (
 
 		return res.status(StatusCodes.NOT_FOUND).json({
 			success: false,
-			message: 'Invalid Id',
+			message: "Invalid Id",
 			data: {},
 		});
 	}
@@ -444,10 +427,7 @@ export const deleteListingHandler = async (
 /* ----------------------------- !SECTION delete property end ---------------------------- */
 
 /* ----------------------------- SECTION approve listing ---------------------------- */
-export const approveListingHandler = async (
-	req: Request<ApproveListingParams>,
-	res: Response
-) => {
+export const approveListingHandler = async (req: Request<ApproveListingParams>, res: Response) => {
 	try {
 		const { id } = req.params;
 
@@ -457,7 +437,7 @@ export const approveListingHandler = async (
 		if (!listing) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'listing not found',
+				message: "listing not found",
 				data: {},
 			});
 		}
@@ -469,7 +449,7 @@ export const approveListingHandler = async (
 		if (!user) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'user not found check id',
+				message: "user not found check id",
 				data: {},
 			});
 		}
@@ -483,7 +463,7 @@ export const approveListingHandler = async (
 		// create new property from listing
 		const newProperty = await PropertyModel.create(newListingObject);
 
-		const newListings = user.listings.filter(listing => {
+		const newListings = user.listings.filter((listing) => {
 			if (listing) {
 				return listing.toString() !== id;
 			}
@@ -500,7 +480,7 @@ export const approveListingHandler = async (
 		// send response
 		return res.status(StatusCodes.CREATED).json({
 			success: true,
-			message: 'Listing approved successfully',
+			message: "Listing approved successfully",
 			data: newProperty,
 		});
 	} catch (err) {
@@ -508,7 +488,7 @@ export const approveListingHandler = async (
 
 		return res.status(StatusCodes.NOT_FOUND).json({
 			success: false,
-			message: 'Invalid Id',
+			message: "Invalid Id",
 			data: {},
 		});
 	}
@@ -519,7 +499,7 @@ export const approveListingHandler = async (
 /* -------------------------- SECTION delete specific File -------------------------- */
 export const deleteSpecificFileFromListingHandler = async (
 	req: Request<DeleteSpecificFileFromListingParams>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		const { key, id, type } = req.params;
@@ -529,32 +509,26 @@ export const deleteSpecificFileFromListingHandler = async (
 		if (!listing) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'listing not found',
+				message: "listing not found",
 				data: {},
 			});
 		}
 
 		// delete files from listing
-		if (type === 'images') {
-			const newImagesArray = listing.images.filter(
-				image => image.key !== key
-			);
+		if (type === "images") {
+			const newImagesArray = listing.images.filter((image) => image.key !== key);
 
 			listing.images = newImagesArray;
 
 			listing.save();
-		} else if (type === 'videos') {
-			const newVideosArray = listing.videos.filter(
-				video => video.key !== key
-			);
+		} else if (type === "videos") {
+			const newVideosArray = listing.videos.filter((video) => video.key !== key);
 
 			listing.videos = newVideosArray;
 
 			listing.save();
-		} else if (type === 'documents') {
-			const newDocumentsArray = listing.documents.filter(
-				document => document.key !== key
-			);
+		} else if (type === "documents") {
+			const newDocumentsArray = listing.documents.filter((document) => document.key !== key);
 
 			listing.documents = newDocumentsArray;
 
@@ -566,7 +540,7 @@ export const deleteSpecificFileFromListingHandler = async (
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'File deleted successfully',
+			message: "File deleted successfully",
 			data: {},
 		});
 	} catch (err) {
@@ -574,7 +548,7 @@ export const deleteSpecificFileFromListingHandler = async (
 
 		return res.status(StatusCodes.NOT_FOUND).json({
 			success: false,
-			message: 'Invalid key',
+			message: "Invalid key",
 			data: {},
 		});
 	}

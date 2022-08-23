@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UserModel } from "../models/user.model";
 import { generateJWT, verifyJWT } from "../helpers/jwt.helper";
 import { httpOnlyCookie } from "../helpers/cookie.helper";
-import logger from "../helpers/logger.helper";
+import logger from "../config/logger.config";
 import { LoginBody, SignupBody } from "../schemas/auth.schema";
 import { StatusCodes } from "http-status-codes";
 

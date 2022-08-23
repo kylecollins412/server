@@ -1,12 +1,9 @@
-import { UserModel } from '../models/user.model';
-import logger from '../helpers/logger.helper';
-import { Request, Response } from 'express';
-import { StatusCodes } from 'http-status-codes';
-import {
-	GetSingleUserParams,
-	GetSingleUserQuery,
-} from '../schemas/user.schema';
-import { ResetPasswordBody } from '../schemas/user.schema';
+import { UserModel } from "../models/user.model";
+import logger from "../config/logger.config";
+import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+import { GetSingleUserParams, GetSingleUserQuery } from "../schemas/user.schema";
+import { ResetPasswordBody } from "../schemas/user.schema";
 
 /* ---------------------------- SECTION get all users ---------------------------- */
 
@@ -18,20 +15,18 @@ export const getAllUsersHandler = async (req: Request, res: Response) => {
 
 		// ANCHOR populate both listings and properties
 		if (listings && properties) {
-			users = await UserModel.find()
-				.populate('listings')
-				.populate('properties');
+			users = await UserModel.find().populate("listings").populate("properties");
 		} else if (listings) {
-			users = await UserModel.find().populate('listings');
+			users = await UserModel.find().populate("listings");
 		} else if (properties) {
-			users = await UserModel.find().populate('properties');
+			users = await UserModel.find().populate("properties");
 		} else {
 			users = await UserModel.find();
 		}
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'All contacts fetched successfully',
+			message: "All contacts fetched successfully",
 			data: users,
 		});
 	} catch (err) {
@@ -39,7 +34,7 @@ export const getAllUsersHandler = async (req: Request, res: Response) => {
 
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Internal Server Error',
+			message: "Internal Server Error",
 			data: {},
 		});
 	}
@@ -51,7 +46,7 @@ export const getAllUsersHandler = async (req: Request, res: Response) => {
 
 export const getSingleUserHandler = async (
 	req: Request<GetSingleUserParams, {}, {}, GetSingleUserQuery>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		const { id } = req.params;
@@ -61,13 +56,11 @@ export const getSingleUserHandler = async (
 
 		// ANCHOR populate both listings and properties
 		if (listings && properties) {
-			user = await UserModel.findById(id)
-				.populate('listings')
-				.populate('properties');
+			user = await UserModel.findById(id).populate("listings").populate("properties");
 		} else if (listings) {
-			user = await UserModel.findById(id).populate('listings');
+			user = await UserModel.findById(id).populate("listings");
 		} else if (properties) {
-			user = await UserModel.findById(id).populate('properties');
+			user = await UserModel.findById(id).populate("properties");
 		} else {
 			user = await UserModel.findById(id);
 		}
@@ -75,30 +68,30 @@ export const getSingleUserHandler = async (
 		if (!user) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'User not found',
+				message: "User not found",
 				data: {},
 			});
 		}
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'User fetched successfully',
+			message: "User fetched successfully",
 			data: user,
 		});
 	} catch (err: any) {
 		logger.error(err);
 
-		if (err.path === '_id') {
+		if (err.path === "_id") {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'User not found',
+				message: "User not found",
 				data: {},
 			});
 		}
 
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Internal server error',
+			message: "Internal server error",
 			data: {},
 		});
 	}
@@ -109,7 +102,7 @@ export const getSingleUserHandler = async (
 /* -------------------------- SECTION - reset password ------------------------- */
 export const resetPasswordHandler = async (
 	req: Request<{}, {}, ResetPasswordBody>,
-	res: Response
+	res: Response,
 ) => {
 	try {
 		const { email, newPassword } = req.body;
@@ -121,7 +114,7 @@ export const resetPasswordHandler = async (
 		if (!user) {
 			return res.status(StatusCodes.NOT_FOUND).json({
 				success: false,
-				message: 'User not found please check if your email is correct',
+				message: "User not found please check if your email is correct",
 				data: {},
 			});
 		}
@@ -132,14 +125,14 @@ export const resetPasswordHandler = async (
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
-			message: 'Password updated successfully',
+			message: "Password updated successfully",
 			data: {},
 		});
 	} catch (err) {
 		logger.error(err);
 		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: 'Internal Server Error',
+			message: "Internal Server Error",
 			data: {},
 		});
 	}

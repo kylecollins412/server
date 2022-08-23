@@ -9,7 +9,7 @@ import {
 
 import { generateJWT, verifyJWT } from "../helpers/jwt.helper";
 import { httpOnlyCookie } from "../helpers/cookie.helper";
-import logger from "../helpers/logger.helper";
+import logger from "../config/logger.config";
 import { StatusCodes } from "http-status-codes";
 
 /* --------------------------------- ANCHOR create --------------------------------- */
