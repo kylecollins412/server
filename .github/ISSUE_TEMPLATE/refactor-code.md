@@ -14,6 +14,6 @@ assignees: ""
 
 ## How to refactor :-
 
-<!--- Link of component/code from `mui` or any external liberary (if any) --->
+<!--- Link of any external library that can be used (if any) --->
 
 ## Link :-

@@ -1,7 +1,7 @@
 ---
 name: Security Issue
 about: Describe any security issue
-title: ":local: "
+title: ":lock: "
 labels: feature, security
 assignees: ""
 ---
