@@ -10,7 +10,7 @@
 			"item": [
 				{
 					"name": "Send new OTP",
-					"_postman_id": "7cf141d6-d8fb-412d-9db1-c691dfa7a70a",
+					"id": "7cf141d6-d8fb-412d-9db1-c691dfa7a70a",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -83,7 +83,7 @@
 				},
 				{
 					"name": "Verify OTP",
-					"_postman_id": "ce5f8114-a70c-4eb3-acd1-54211f480bb6",
+					"id": "ce5f8114-a70c-4eb3-acd1-54211f480bb6",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -100,7 +100,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/otp?email=ayushchugh2006@gmail.com&otp=3702",
+							"raw": "{{base_url}}/otp?email=ayushchugh2006@gmail.com&otp=2680",
 							"host": [
 								"{{base_url}}"
 							],
@@ -115,7 +115,7 @@
 								},
 								{
 									"key": "otp",
-									"value": "3702",
+									"value": "2680",
 									"description": "Which otp was sent to the given email"
 								}
 							]
@@ -216,7 +216,7 @@
 					]
 				}
 			],
-			"_postman_id": "6fe95382-1f87-4449-9f6e-a8617eaf5aa1"
+			"id": "6fe95382-1f87-4449-9f6e-a8617eaf5aa1"
 		}
 	],
 	"auth": {
