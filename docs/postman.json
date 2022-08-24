@@ -26,7 +26,8 @@
 								}
 							}
 						},
-						"url": "{{base_url}}/otp"
+						"url": "{{base_url}}/otp",
+						"description": "this request will send an OTP to the email provided in the body"
 					},
 					"response": [
 						{
