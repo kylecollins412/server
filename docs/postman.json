@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "63ae208c-9ce7-4b12-b27d-0ff5d0a29d5a",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OTP",
+			"item": [
+				{
+					"name": "Send new OTP",
+					"_postman_id": "7cf141d6-d8fb-412d-9db1-c691dfa7a70a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ayushchugh2006@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/otp"
+					},
+					"response": [
+						{
+							"id": "c610eb04-213a-4920-b2c3-91cb4af377e4",
+							"name": "success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"ayushchugh2006@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/otp"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"success\": true,\n    \"message\": \"Otp sent successfully\",\n    \"data\": {\n        \"email\": \"ayushchugh2006@gmail.com\",\n        \"otp\": 3702,\n        \"expireAt\": \"2022-08-24T03:39:50.028Z\",\n        \"_id\": \"63059d9f3109e992d44d4930\",\n        \"createdAt\": \"2022-08-24T03:40:15.685Z\",\n        \"updatedAt\": \"2022-08-24T03:40:15.685Z\",\n        \"__v\": 0\n    }\n}"
+						},
+						{
+							"id": "99c7b735-013c-4db3-9839-fb9daf37bb73",
+							"name": "Email is not provided",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "{{base_url}}/otp"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"success\": false,\n    \"message\": \"You need to enter valid email\",\n    \"data\": [\n        {\n            \"code\": \"invalid_type\",\n            \"expected\": \"string\",\n            \"received\": \"undefined\",\n            \"path\": [\n                \"email\"\n            ],\n            \"message\": \"You need to enter valid email\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Verify OTP",
+					"_postman_id": "ce5f8114-a70c-4eb3-acd1-54211f480bb6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/otp?email=ayushchugh2006@gmail.com&otp=3702",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"otp"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "ayushchugh2006@gmail.com",
+									"description": "Email on which otp is sent"
+								},
+								{
+									"key": "otp",
+									"value": "3702",
+									"description": "Which otp was sent to the given email"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "4b4f2c6f-8f1b-447f-88c0-ed7e4ce1f95a",
+							"name": "success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/otp?email=ayushchugh2006@gmail.com&otp=3702",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"otp"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "ayushchugh2006@gmail.com",
+											"description": "Email on which otp is sent"
+										},
+										{
+											"key": "otp",
+											"value": "3702",
+											"description": "Which otp was sent to the given email"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"success\": true,\n    \"message\": \"Otp verified successfully\",\n    \"data\": {}\n}"
+						},
+						{
+							"id": "8efc63eb-d998-4ae6-b132-c8859590ca85",
+							"name": "Verify OTP",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/otp?otp=3702",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"otp"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "ayushchugh2006@gmail.com",
+											"description": "Email on which otp is sent",
+											"disabled": true
+										},
+										{
+											"key": "otp",
+											"value": "3702",
+											"description": "Which otp was sent to the given email"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": null,
+							"cookie": [],
+							"responseTime": null,
+							"body": "{\n    \"success\": false,\n    \"message\": \"email is required\",\n    \"data\": [\n        {\n            \"code\": \"invalid_type\",\n            \"expected\": \"string\",\n            \"received\": \"undefined\",\n            \"path\": [\n                \"email\"\n            ],\n            \"message\": \"email is required\"\n        }\n    ]\n}"
+						}
+					]
+				}
+			],
+			"_postman_id": "6fe95382-1f87-4449-9f6e-a8617eaf5aa1"
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": {
+			"value": "EMR7dLC3GqAoyxXRH284CUKWC2SGBu3A8EgmdCaAHP3ou7PXPtofwiRzroK5vfwGnz9FCWoWZVObOwsZPqQAs5nAgJPRxHD8l4Mt",
+			"key": "x-api-key"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "2385af99-f104-461b-99be-2aec20e3d69d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "91df6c71-f6fc-4389-8016-14c035ef4125",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
