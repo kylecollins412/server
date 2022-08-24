@@ -120,7 +120,7 @@
 								}
 							]
 						},
-						"description": "This request will verify the otp if it is valid or not\n\nit takes 2 queries\n\n*   email - email on which otp was sent to\n*   otp - otp which is to be verified"
+						"description": "This request will verify the otp if it is valid or not\n\nit takes 2 queries\n\n*   `email` - email on which otp was sent to\n*   `otp` - otp which is to be verified"
 					},
 					"response": [
 						{
