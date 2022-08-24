@@ -116,7 +116,7 @@
 								{
 									"key": "otp",
 									"value": "2680",
-									"description": "Which otp was sent to the given email"
+									"description": " otp which is to be verified"
 								}
 							]
 						},
