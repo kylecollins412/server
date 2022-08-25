@@ -4,8 +4,8 @@ import { config } from "dotenv";
 import mongoose from "mongoose";
 import supertest from "supertest";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import app from "../app";
-import { OTPDocument } from "../models/otp.model";
+import app from "../src/app";
+import { OTPDocument } from "../src/models/otp.model";
 
 config();
 
