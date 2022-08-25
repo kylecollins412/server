@@ -273,7 +273,7 @@
 						},
 						{
 							"id": "8efc63eb-d998-4ae6-b132-c8859590ca85",
-							"name": "Verify OTP",
+							"name": "Email is not provided",
 							"originalRequest": {
 								"method": "GET",
 								"header": [],
