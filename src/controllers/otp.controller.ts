@@ -1,27 +1,45 @@
-import { OtpModel } from "../models/otp.model";
-import { sendEmail } from "../helpers/email.helper";
-import logger from "../config/logger.config";
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { SendOtpBody, VerifyOtpSchema } from "../schemas/otp.schema";
+import { ZodError } from "zod";
+
+import {
+	createOtpService,
+	deleteManyOTPService,
+	deleteOneOTPService,
+	findOneOTPService,
+	findOTPService,
+} from "../services/otp.service";
+import { sendEmail } from "../helpers/email.helper";
+import logger from "../config/logger.config";
+import {
+	SendOtpBody,
+	verifyOtpSchema,
+	VerifyOtpSchema,
+	sendOtpSchema,
+} from "../schemas/otp.schema";
 
 /* ------------------------------- ANCHOR send otp ------------------------------- */
-export const sendOtpHandler = async (req: Request<{}, {}, SendOtpBody>, res: Response) => {
+export const sendOtpHandler = async (
+	req: Request<Record<string, never>, Record<string, never>, SendOtpBody>,
+	res: Response,
+) => {
+	const { email } = req.body;
+
 	try {
-		const { email } = req.body;
+		sendOtpSchema.body.parse(req.body);
 
 		// get all otps which match same email and than delete them
-		const existingOtps = await OtpModel.find({ email });
+		const existingOtps = await findOTPService({ email });
 
-		if (existingOtps.length > 0) {
-			await OtpModel.deleteMany({ email });
+		if (existingOtps?.length > 0) {
+			await deleteManyOTPService({ email });
 		}
 
 		// generate otp
 		const otp = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
 
 		// save to db
-		const saveOtpToDB = await OtpModel.create({
+		const saveOtpToDB = await createOtpService({
 			email,
 			otp,
 		});
@@ -37,22 +55,40 @@ export const sendOtpHandler = async (req: Request<{}, {}, SendOtpBody>, res: Res
 	} catch (err) {
 		logger.error(err);
 
-		return res.status(StatusCodes.NOT_ACCEPTABLE).json({
+		if (err instanceof ZodError) {
+			return res.status(StatusCodes.BAD_REQUEST).json({
+				success: false,
+				message: err.errors[0].message,
+				data: err.errors,
+			});
+		}
+
+		return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
 			success: false,
-			message: "Please enter valid Email",
+			message: "Internal Server Error",
 			data: {},
 		});
 	}
 };
 
 /* ------------------------------- ANCHOR verify otp ------------------------------- */
-export const verifyOtpHandler = async (req: Request<{}, {}, VerifyOtpSchema>, res: Response) => {
+export const verifyOtpHandler = async (
+	req: Request<
+		Record<string, never>,
+		Record<string, never>,
+		Record<string, never>,
+		VerifyOtpSchema
+	>,
+	res: Response,
+) => {
+	const { otp, email } = req.query;
+
 	try {
-		const { otp, email } = req.body;
+		verifyOtpSchema.query.parse(req.query);
 
-		const otpFromDB = await OtpModel.findOne({ email });
+		const otpFromDB = await findOneOTPService({ email });
 
-		if (otpFromDB?.otp !== otp) {
+		if (otpFromDB?.otp !== +otp) {
 			return res.status(StatusCodes.BAD_REQUEST).json({
 				success: false,
 				message: "Please enter valid otp",
@@ -61,7 +97,7 @@ export const verifyOtpHandler = async (req: Request<{}, {}, VerifyOtpSchema>, re
 		}
 
 		// delete otp from db
-		await OtpModel.deleteOne({ email });
+		await deleteOneOTPService({ email });
 
 		return res.status(StatusCodes.OK).json({
 			success: true,
@@ -70,6 +106,14 @@ export const verifyOtpHandler = async (req: Request<{}, {}, VerifyOtpSchema>, re
 		});
 	} catch (err) {
 		logger.error(err);
+
+		if (err instanceof ZodError) {
+			return res.status(StatusCodes.BAD_REQUEST).json({
+				success: false,
+				message: err.errors[0].message,
+				data: err.errors,
+			});
+		}
 
 		return res.status(StatusCodes.NOT_FOUND).json({
 			success: false,

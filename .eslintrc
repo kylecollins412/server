@@ -44,6 +44,7 @@
 		"space-before-blocks": "error",
 		"quotes": "off",
 		"camelcase": "error",
+		"node/no-unpublished-import": "off",
 		"node/no-unsupported-features/es-syntax": "off",
 		"node/no-missing-import": [
 			"error",
@@ -60,10 +61,6 @@
 		"node/global-require": "error",
 		"node/no-sync": "error",
 		"no-secrets/no-secrets": "error",
-		"pii/no-email": "error",
-		"pii/no-dob": "warn",
-		"pii/no-ip": "error",
-		"pii/no-phone-number": "error",
 		"spaced-comment": "off",
 		"prefer-destructuring": ["error", { "object": true, "array": true }],
 		"no-unused-vars": "off",

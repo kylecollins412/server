@@ -582,10 +582,11 @@ export const movePropertyToListingsHandler = async (
 		}
 
 		// push listing to user's pending listings
-		const newPropertyObject = { ...property.toObject() };
 
-		delete newPropertyObject._id;
-		delete newPropertyObject.__v;
+		const newPropertyObject = property.toObject();
+
+		// delete newPropertyObject._id;
+		// delete newPropertyObject.__v;
 
 		// create new property from listing
 		const newListing = await ListingModel.create(newPropertyObject);

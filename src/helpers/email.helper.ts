@@ -1,5 +1,5 @@
-import nodemailer, { SentMessageInfo } from 'nodemailer';
-import { config } from 'dotenv';
+import nodemailer, { SentMessageInfo } from "nodemailer";
+import { config } from "dotenv";
 
 config();
 
@@ -13,13 +13,9 @@ const pass = process.env.EMAIL_PASSWORD as string;
  * @param {string} text content of email
  * @return sent message info
  */
-export function sendEmail(
-	to: string,
-	subject: string,
-	text: string
-): Promise<SentMessageInfo> {
+export function sendEmail(to: string, subject: string, text: string): Promise<SentMessageInfo> {
 	const transporter = nodemailer.createTransport({
-		host: 'smtp.gmail.com',
+		host: "smtp.gmail.com",
 		port: 587,
 		secure: false,
 		requireTLS: true,
@@ -31,7 +27,7 @@ export function sendEmail(
 
 	const mailOptions = {
 		from: {
-			name: 'Shri Property',
+			name: "Shri Property",
 			address: user,
 		},
 		to,
