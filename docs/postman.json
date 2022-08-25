@@ -78,7 +78,7 @@
 							"header": null,
 							"cookie": [],
 							"responseTime": null,
-							"body": "{\n    \"success\": false,\n    \"message\": \"You need to enter valid email\",\n    \"data\": [\n        {\n            \"code\": \"invalid_type\",\n            \"expected\": \"string\",\n            \"received\": \"undefined\",\n            \"path\": [\n                \"email\"\n            ],\n            \"message\": \"You need to enter valid email\"\n        }\n    ]\n}"
+							"body": "{\n    \"success\": false,\n    \"message\": \"Email is required\",\n    \"data\": [\n        {\n            \"code\": \"invalid_type\",\n            \"expected\": \"string\",\n            \"received\": \"undefined\",\n            \"path\": [\n                \"email\"\n            ],\n            \"message\": \"Email is required\"\n        }\n    ]\n}"
 						}
 					]
 				},
