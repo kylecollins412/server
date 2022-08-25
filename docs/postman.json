@@ -82,7 +82,7 @@
 						},
 						{
 							"id": "9601d8eb-f1ca-4c3d-9e79-38f75887d8b1",
-							"name": "Send new OTP",
+							"name": "Email is invalid",
 							"originalRequest": {
 								"method": "POST",
 								"header": [],
